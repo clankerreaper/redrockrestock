@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Red Rock Restock | Vacation Rental Restocking & Guest-Ready Checks</title>
+  <meta name="description" content="Red Rock Restock helps Southern Utah Airbnb, VRBO, and short-term rental hosts keep their properties stocked, checked, and guest-ready with supply verification, photo reports, and emergency restock support." />
+  <style>
+    :root {
+      --rust: #A94F2D;
+      --rust-dark: #7A321E;
+      --clay: #C9794A;
+      --sand: #F4E7D3;
+      --cream: #FFF9EF;
+      --charcoal: #2E2925;
+      --brown: #5A3B2B;
+      --sage: #66785F;
+      --line: rgba(46, 41, 37, 0.16);
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--charcoal);
+      background: var(--cream);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at top left, rgba(201, 121, 74, 0.22), transparent 34%),
+        linear-gradient(135deg, var(--cream) 0%, var(--sand) 100%);
+      padding: 64px 0 56px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 52px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--rust);
+      color: var(--cream);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -1px;
+      box-shadow: 0 12px 28px rgba(122, 50, 30, 0.18);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 13px;
+      color: var(--brown);
+      margin-top: 1px;
+    }
+
+    .nav-email {
+      font-size: 14px;
+      color: var(--brown);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(90, 59, 43, 0.3);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--rust-dark);
+      background: rgba(169, 79, 45, 0.10);
+      border: 1px solid rgba(169, 79, 45, 0.20);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5.5vw, 68px);
+      line-height: 0.97;
+      letter-spacing: -0.055em;
+      color: var(--charcoal);
+    }
+
+    .hero p {
+      font-size: 19px;
+      max-width: 680px;
+      color: var(--brown);
+      margin: 22px 0 28px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--rust);
+      color: var(--white);
+      box-shadow: 0 14px 28px rgba(169, 79, 45, 0.24);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.58);
+      border-color: rgba(90, 59, 43, 0.18);
+      color: var(--charcoal);
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(90, 59, 43, 0.14);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 22px 52px rgba(90, 59, 43, 0.12);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+
+    .price {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--rust-dark);
+      letter-spacing: -0.05em;
+    }
+
+    .price span {
+      display: block;
+      font-size: 13px;
+      color: var(--brown);
+      font-weight: 700;
+      letter-spacing: 0;
+      margin-top: 2px;
+    }
+
+    .badge {
+      background: rgba(102, 120, 95, 0.12);
+      color: #42533e;
+      border: 1px solid rgba(102, 120, 95, 0.20);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    ul.clean-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    ul.clean-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--brown);
+    }
+
+    .check {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(169, 79, 45, 0.12);
+      color: var(--rust-dark);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-alt {
+      background: var(--sand);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 3.5vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--brown);
+      font-size: 17px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card,
+    .step-card,
+    .scope-card {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(90, 59, 43, 0.14);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 28px rgba(90, 59, 43, 0.07);
+    }
+
+    .feature-card h3,
+    .step-card h3,
+    .scope-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p,
+    .step-card p,
+    .scope-card p {
+      margin: 0;
+      color: var(--brown);
+      font-size: 15px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(169, 79, 45, 0.12);
+      color: var(--rust-dark);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      margin-bottom: 14px;
+      font-size: 19px;
+    }
+
+    .plan {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .plan-price {
+      background: var(--rust);
+      color: var(--white);
+      border-radius: 26px;
+      padding: 30px;
+      box-shadow: 0 20px 48px rgba(169, 79, 45, 0.20);
+    }
+
+    .plan-price h2 {
+      font-size: 33px;
+      line-height: 1.02;
+      margin: 0 0 16px;
+      letter-spacing: -0.04em;
+    }
+
+    .plan-price .big {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      margin: 18px 0 0;
+    }
+
+    .plan-price .small {
+      color: rgba(255, 255, 255, 0.83);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .plan-price .note {
+      color: rgba(255, 255, 255, 0.86);
+      border-top: 1px solid rgba(255,255,255,0.25);
+      padding-top: 18px;
+      margin-top: 22px;
+    }
+
+    .plan-details {
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(90, 59, 43, 0.14);
+      border-radius: 26px;
+      padding: 30px;
+    }
+
+    .muted-box {
+      background: rgba(102, 120, 95, 0.10);
+      border: 1px solid rgba(102, 120, 95, 0.18);
+      color: #42533e;
+      padding: 14px 16px;
+      border-radius: 18px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .steps {
+      counter-reset: step;
+    }
+
+    .step-card {
+      position: relative;
+    }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--rust);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .cta {
+      text-align: center;
+      background:
+        radial-gradient(circle at top right, rgba(169,79,45,0.18), transparent 36%),
+        var(--charcoal);
+      color: var(--cream);
+      border-radius: 34px;
+      padding: 52px 24px;
+      box-shadow: 0 24px 60px rgba(46, 41, 37, 0.18);
+    }
+
+    .cta h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -0.04em;
+      line-height: 1.04;
+    }
+
+    .cta p {
+      color: rgba(255, 249, 239, 0.82);
+      margin: 0 auto 26px;
+      max-width: 720px;
+      font-size: 17px;
+    }
+
+    .cta .btn-primary {
+      background: var(--clay);
+      box-shadow: none;
+    }
+
+    .contact-links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: rgba(255, 249, 239, 0.86);
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 28px 0 38px;
+      color: var(--brown);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 34px;
+      }
+
+      .hero-grid,
+      .plan,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      section {
+        padding: 52px 0;
+      }
+
+      .hero-card,
+      .plan-price,
+      .plan-details,
+      .cta {
+        border-radius: 22px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(100% - 26px, 1120px);
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .button-row {
+        width: 100%;
+      }
+
+      .card-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="container">
+        <nav class="nav" aria-label="Main navigation">
+          <div class="brand">
+            <div class="brand-mark">RR</div>
+            <div class="brand-text">
+              <strong>Red Rock Restock</strong>
+              <span>Helping Hosts Stay Stocked</span>
+            </div>
+          </div>
+          <a class="nav-email" href="mailto:hello@redrockrestock.com">hello@redrockrestock.com</a>
+        </nav>
+
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Southern Utah Vacation Rental Support</div>
+            <h1>Local Guest-Ready Checks & Restock Support</h1>
+            <p>Red Rock Restock helps Airbnb, VRBO, and short-term rental hosts keep their properties stocked, checked, and ready for guests with supply verification, photo reports, low-stock alerts, and emergency restock support.</p>
+            <div class="button-row">
+              <a class="btn btn-primary" href="https://forms.gle/xN5BvzKfPJLZhpXSA" target="_blank" rel="noopener">Request Founding Property Info</a>
+              <a class="btn btn-secondary" href="mailto:brent@redrockrestock.com?subject=Red%20Rock%20Restock%20Founding%20Property%20Info">Email Brent</a>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="Founding Property Plan summary">
+            <div class="card-header">
+              <div>
+                <div class="price">$199<span>/month for first 90 days</span></div>
+              </div>
+              <div class="badge">Founding Property Plan</div>
+            </div>
+            <ul class="clean-list">
+              <li><span class="check">✓</span><span>2 scheduled visits per month</span></li>
+              <li><span class="check">✓</span><span>Supply inventory checks and approved restocking support</span></li>
+              <li><span class="check">✓</span><span>Basic guest-ready inspection and photo report after each visit</span></li>
+              <li><span class="check">✓</span><span>Low-stock alerts, missing item notes, and emergency supply run options</span></li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>Keep Your Rental Ready Before Guests Notice What’s Missing</h2>
+          <p>Many hosts already have supplies delivered or ask cleaners to restock items. Red Rock Restock fills the gap by verifying supplies are actually stocked, checking for common guest-ready issues, documenting the property with photos, and helping with emergency supply runs when something gets missed.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="icon">✓</div>
+            <h3>Supply Verification</h3>
+            <p>We check that approved guest supplies are available, accessible, and stocked where guests actually need them.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">▣</div>
+            <h3>Photo Reports</h3>
+            <p>Owners receive clear visit notes and photo confirmation so they have local visibility without driving to the property.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">!</div>
+            <h3>Low-Stock Alerts</h3>
+            <p>We flag low supplies, missing items, visible damage, and small issues before they turn into guest complaints.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">↻</div>
+            <h3>Restock Support</h3>
+            <p>If approved supplies need to be restocked, we can handle the local run and place items where they belong.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">⌂</div>
+            <h3>Guest-Ready Checks</h3>
+            <p>We check basic guest-ready items like remotes, batteries, odors, trash issues, and obvious missing or damaged items.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">→</div>
+            <h3>Emergency Runs</h3>
+            <p>When something gets missed, we can provide emergency supply support during normal or after-hours windows.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="plan">
+          <div class="plan-price">
+            <h2>Founding Property Plan</h2>
+            <p>We are opening a limited number of founding property spots while building our first Southern Utah route.</p>
+            <div class="big">$199/mo</div>
+            <div class="small">for the first 90 days, then $299/month</div>
+            <p class="note">Supplies are billed separately at retail cost plus a 30% procurement and handling fee.</p>
+            <div class="button-row" style="margin-top: 22px;">
+              <a class="btn btn-primary" href="https://forms.gle/xN5BvzKfPJLZhpXSA" target="_blank" rel="noopener">Request Founding Property Info</a>
+            </div>
+          </div>
+
+          <div class="plan-details">
+            <h3 style="margin-top: 0; font-size: 24px; letter-spacing: -0.03em;">What’s Included</h3>
+            <ul class="clean-list">
+              <li><span class="check">✓</span><span>2 scheduled visits per month</span></li>
+              <li><span class="check">✓</span><span>Supply inventory check</span></li>
+              <li><span class="check">✓</span><span>Approved supply restocking if needed</span></li>
+              <li><span class="check">✓</span><span>Basic guest-ready inspection</span></li>
+              <li><span class="check">✓</span><span>Photo report after each visit</span></li>
+              <li><span class="check">✓</span><span>Low-stock alerts</span></li>
+              <li><span class="check">✓</span><span>Missing or damaged item notes</span></li>
+              <li><span class="check">✓</span><span>Discounted emergency supply runs</span></li>
+            </ul>
+            <div class="muted-box">
+              <strong>Emergency supply runs:</strong><br />
+              $65 during normal hours plus supplies<br />
+              $125 after hours plus supplies
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>Built for Hosts Who Want Local Backup</h2>
+          <p>Red Rock Restock is designed for vacation rental owners and hosts who want peace of mind knowing someone local can help verify supplies, check basic guest-ready items, and report issues before guests do.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="feature-card"><h3>Out-of-state vacation rental owners</h3><p>Local visibility for owners who cannot easily check their property in person.</p></div>
+          <div class="feature-card"><h3>Self-managed Airbnb and VRBO hosts</h3><p>Extra support without hiring a full property management company.</p></div>
+          <div class="feature-card"><h3>Co-hosts and small property managers</h3><p>Route-based restock and verification support for teams managing multiple properties.</p></div>
+          <div class="feature-card"><h3>Hosts relying on cleaners</h3><p>Separate supply verification when cleaners are focused on turnover speed and cleanliness.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Simple, Local Support for Your Rental</h2>
+          <p>A clear process so owners know what is checked, what is restocked, and what needs attention.</p>
+        </div>
+
+        <div class="grid-2 steps">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Submit your property info</h3>
+            <p>Fill out the short intake form so we can understand your property, current supply process, and service needs.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>We review your setup</h3>
+            <p>We confirm your property location, supply preferences, access instructions, and whether the Founding Property Plan is a good fit.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>We check and document</h3>
+            <p>During scheduled visits, we verify supplies, check basic guest-ready items, restock approved items if needed, and send a photo report.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h3>You stay informed</h3>
+            <p>You receive updates on low supplies, missing items, visible issues, and anything that could affect the next guest experience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>Clear Scope, No Confusion</h2>
+          <p>Red Rock Restock is not a cleaning company, handyman service, or full property management company. We focus on keeping supplies verified, properties checked, and owners informed.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="scope-card"><h3>No Cleaning</h3><p>We do not replace your cleaning team or perform turnover cleaning.</p></div>
+          <div class="scope-card"><h3>No Repairs</h3><p>We report visible issues but do not perform handyman or maintenance work.</p></div>
+          <div class="scope-card"><h3>No Guest Messaging</h3><p>We do not act as the property manager or guest communication contact.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Serving Southern Utah</h2>
+          <p>Red Rock Restock serves vacation rental hosts in St. George, Washington, Santa Clara, Ivins, Hurricane, and nearby Southern Utah areas depending on route availability.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <h2>Interested in a Founding Property Spot?</h2>
+          <p>We are opening a limited number of founding property spots while building our first Southern Utah route. Fill out the short intake form and Brent will follow up to learn more about your property, current restocking process, and whether Red Rock Restock is a good fit.</p>
+          <a class="btn btn-primary" href="https://forms.gle/xN5BvzKfPJLZhpXSA" target="_blank" rel="noopener">Request Founding Property Info</a>
+          <div class="contact-links">
+            <span>hello@redrockrestock.com</span>
+            <span>brent@redrockrestock.com</span>
+            <span>redrockrestock.com</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <strong>Red Rock Restock</strong><br />
+        Helping Hosts Stay Stocked<br />
+        Vacation Rental Restocking & Guest-Ready Checks · Southern Utah<br />
+        hello@redrockrestock.com
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
